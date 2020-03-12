@@ -1,0 +1,35 @@
+@PORT = 7777
+POST http://localhost:{{PORT}}/api/blogs
+content-type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVGVzdCIsImlkIjoiNWU1NTk3YWExYThkNTIxODA4MDE3NTI5IiwiaWF0IjoxNTgyNjY3NzE4fQ.9KVESFB4sLNG5isFI6iAcd84Fq3b3GD1UCfvTIY1WFY
+
+{
+    "title": "ttttttt",
+    "author": "-ttttttttt--",
+    "url": "kappa.com",
+    "likes": "2"
+}
+
+
+###
+
+GET  http://localhost:{{PORT}}/api/blogs
+
+### 
+
+PUT http://localhost:{{PORT}}/api/blogs/5e58221ba531750e90df8b18
+content-type: application/json
+
+{
+    "title": "Test Post",
+    "author": "admin",
+    "url": "admin.com",
+    "likes": 15
+}
+
+
+###
+
+DELETE http://localhost:{{PORT}}/api/blogs/5e557d138a741f10dcee23dd
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVGVzdCIsImlkIjoiNWU1NTk3YWExYThkNTIxODA4MDE3NTI5IiwiaWF0IjoxNTgyNjY3NzE4fQ.9KVESFB4sLNG5isFI6iAcd84Fq3b3GD1UCfvTIY1WFY
+

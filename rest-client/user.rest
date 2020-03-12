@@ -1,0 +1,22 @@
+@PORT = 7777
+@BEARER_TOKEN=bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjQsImlhdCI6MTU4NDAzNDkwMywiZXhwIjoxNTg0MDM0OTYzfQ.0RPfhRHjC-gh_p5hysXJcooa6Av2Sj5neQZUV7p81bU
+
+POST http://localhost:{{PORT}}/api/users
+Content-Type: application/json
+
+{
+    "username": "admin3",
+    "email": "admin@admin.com",
+    "password": "12345678"
+}
+
+###
+
+
+GET http://localhost:{{PORT}}/api/users
+
+
+###
+
+DELETE  http://localhost:{{PORT}}/api/users/
+Authorization: {{BEARER_TOKEN}}

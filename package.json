@@ -1,0 +1,36 @@
+{
+    "name": "blog",
+    "version": "1.0.0",
+    "description": "A simple Blog",
+    "main": "server.js",
+    "scripts": {
+        "start": "cross-env node NODE_ENV=production ./src/server.js",
+        "server": "cross-env nodemon NODE_ENV=development ./src/server.js",
+        "server-linux": "nodemon NODE_ENV=development ./src/server.js",
+        "test": "cross-env NODE_ENV=test jest --verbose --runInBand",
+        "db:migrate": "cross-env NODE_ENV=migrations node ./src/models/migrations.js",
+        "db:migrate:drop-all": "cross-env NODE_ENV=migrations node ./src/models/migrations.js drop-all"
+    },
+    "keywords": [
+        "blog"
+    ],
+    "author": "shingravirei",
+    "license": "MIT",
+    "dependencies": {
+        "bcrypt": "^4.0.1",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "sequelize": "^5.21.5",
+        "sqlite3": "^4.1.1"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.2",
+        "eslint": "^6.8.0",
+        "jest": "^25.1.0",
+        "nodemon": "^2.0.2",
+        "supertest": "^4.0.2"
+    }
+}
