@@ -1,6 +1,6 @@
 @PORT = 7777
 @TOKEN = bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsImlhdCI6MTU4NDExMDk2NiwiZXhwIjoxNTg0MTk3MzY2fQ.jJmb4DCXljVoWPUM7urB8oA5mJQSjCh0vx8smMHWnFc
-@BLOG_ID = 2
+@BLOG_ID = 1
 
 ###
 
@@ -15,10 +15,15 @@ Authorization: {{TOKEN}}
 
 ###
 
-GET  http://localhost:{{PORT}}/api/blogs
+GET http://localhost:{{PORT}}/api/blogs
 Authorization: {{TOKEN}}
 
-### 
+###
+
+GET http://localhost:{{PORT}}/api/blogs/{{BLOG_ID}}
+Authorization: {{TOKEN}}
+
+###
 
 PUT http://localhost:{{PORT}}/api/blogs/{{BLOG_ID}}
 content-type: application/json

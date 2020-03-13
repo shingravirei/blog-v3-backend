@@ -24,6 +24,29 @@ Router.get('/blogs', async (req, res, next) => {
     }
 });
 
+Router.get('/blogs/:blogId', async (req, res, next) => {
+    try {
+        const { blogId } = req.params;
+        const token = req.token;
+
+        const { id } = jwt.verify(token, SECRET);
+
+        if (!id) {
+            throw Error('missing id');
+        }
+
+        const blog = await Blog.findOne({ where: { id: blogId, UserId: id } });
+
+        if (!blog) {
+            throw Error('Blog not found');
+        }
+
+        res.json(blog);
+    } catch (err) {
+        next(err);
+    }
+});
+
 Router.post('/blogs', async (req, res, next) => {
     try {
         let { title, content } = req.body;
@@ -52,19 +75,19 @@ Router.post('/blogs', async (req, res, next) => {
     }
 });
 
-Router.delete('/blogs/:id', async (req, res, next) => {
+Router.delete('/blogs/:blogId', async (req, res, next) => {
     try {
         const token = req.token;
-        const { id } = req.params;
+        const { blogId } = req.params;
 
-        const decodedToken = jwt.verify(token, SECRET);
+        const { id } = jwt.verify(token, SECRET);
 
         if (!id) {
             throw Error('missing id');
         }
 
         const result = await Blog.destroy({
-            where: { id, UserId: decodedToken.id }
+            where: { id: blogId, UserId: id }
         });
 
         if (result === 0) {
@@ -77,28 +100,28 @@ Router.delete('/blogs/:id', async (req, res, next) => {
     }
 });
 
-Router.put('/blogs/:id', async (req, res, next) => {
+Router.put('/blogs/:blogId', async (req, res, next) => {
     try {
-        let { title, content } = req.body;
+        const { title, content } = req.body;
 
-        const { id } = req.params;
+        const { blogId } = req.params;
 
         const token = req.token;
 
-        const decodedToken = jwt.verify(token, SECRET);
+        const { id } = jwt.verify(token, SECRET);
 
-        if (!decodedToken.id) {
+        if (!id) {
             throw Error('missing id');
         }
 
         if (!title || !content) {
-            throw Error('title and/or url missing');
+            throw Error('title and/or content missing');
         }
 
         // If using postgres, you can just use Blog.update(content, options, returning: true)
         // That way you remove the props setters below, not needing to call blog.save()
         const blog = await Blog.findOne({
-            where: { id, userId: decodedToken.id }
+            where: { id: blogId, userId: id }
         });
 
         if (!blog) {
