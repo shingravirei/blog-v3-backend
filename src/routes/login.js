@@ -5,9 +5,9 @@ const { User } = require('../models/database-config');
 const { SECRET } = require('../config/env-vars');
 
 Router.post('/', async (req, res, next) => {
-    const { username, password } = req.body;
-
     try {
+        const { username, password } = req.body;
+
         const user = await User.findOne({ where: { username } });
 
         const passwordCorrect =

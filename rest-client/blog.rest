@@ -1,35 +1,37 @@
 @PORT = 7777
+@TOKEN = bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsImlhdCI6MTU4NDExMDk2NiwiZXhwIjoxNTg0MTk3MzY2fQ.jJmb4DCXljVoWPUM7urB8oA5mJQSjCh0vx8smMHWnFc
+@BLOG_ID = 2
+
+###
+
 POST http://localhost:{{PORT}}/api/blogs
 content-type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVGVzdCIsImlkIjoiNWU1NTk3YWExYThkNTIxODA4MDE3NTI5IiwiaWF0IjoxNTgyNjY3NzE4fQ.9KVESFB4sLNG5isFI6iAcd84Fq3b3GD1UCfvTIY1WFY
+Authorization: {{TOKEN}}
 
 {
-    "title": "ttttttt",
-    "author": "-ttttttttt--",
-    "url": "kappa.com",
-    "likes": "2"
+    "title": "Second Post by Admin",
+    "content": "This is the actual post body, Im just without imagination"
 }
-
 
 ###
 
 GET  http://localhost:{{PORT}}/api/blogs
+Authorization: {{TOKEN}}
 
 ### 
 
-PUT http://localhost:{{PORT}}/api/blogs/5e58221ba531750e90df8b18
+PUT http://localhost:{{PORT}}/api/blogs/{{BLOG_ID}}
 content-type: application/json
+Authorization: {{TOKEN}}
 
 {
-    "title": "Test Post",
-    "author": "admin",
-    "url": "admin.com",
-    "likes": 15
+    "title": "First Post that was edited a third time",
+    "content": "This is the actual post body, Im just without imagination"
 }
 
 
 ###
 
-DELETE http://localhost:{{PORT}}/api/blogs/5e557d138a741f10dcee23dd
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlRlc3QgVGVzdCIsImlkIjoiNWU1NTk3YWExYThkNTIxODA4MDE3NTI5IiwiaWF0IjoxNTgyNjY3NzE4fQ.9KVESFB4sLNG5isFI6iAcd84Fq3b3GD1UCfvTIY1WFY
+DELETE http://localhost:{{PORT}}/api/blogs/{{BLOG_ID}}
+Authorization: {{TOKEN}}
 

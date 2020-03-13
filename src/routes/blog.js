@@ -1,30 +1,22 @@
 const Router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const { Blog } = require('../models/database-config');
-const User = require('../models/User');
 const { SECRET } = require('../config/env-vars');
 
 Router.get('/blogs', async (req, res, next) => {
     try {
-        const blogs = await Blog.findAll({});
+        const token = req.token;
 
-        res.json(blogs);
-    } catch (err) {
-        next(err);
-    }
-});
+        const { id } = jwt.verify(token, SECRET);
 
-Router.get('/blogs/:username', async (req, res, next) => {
-    const token = req.token;
-
-    try {
-        const decodedToken = jwt.verify(token, SECRET);
-
-        if (!token || !decodedToken.id) {
-            throw new Error('missing id');
+        if (!id) {
+            throw Error('missing id');
         }
 
-        const blogs = await User.find({ username: decodedToken.username });
+        const blogs = await Blog.findAll({
+            where: { UserId: id },
+            attributes: ['id', 'title', 'content', 'updatedAt']
+        });
 
         res.json(blogs);
     } catch (err) {
@@ -33,58 +25,51 @@ Router.get('/blogs/:username', async (req, res, next) => {
 });
 
 Router.post('/blogs', async (req, res, next) => {
-    let { title, author, url, likes } = req.body;
-
-    const token = req.token;
-
     try {
-        const decodedToken = jwt.verify(token, SECRET);
+        let { title, content } = req.body;
 
-        if (!token || !decodedToken.id) {
-            throw new Error('missing id');
+        const token = req.token;
+
+        const { id } = jwt.verify(token, SECRET);
+
+        if (!id) {
+            throw Error('missing id');
         }
 
-        if (typeof title === 'undefined' || typeof url === 'undefined') {
-            throw new Error('title and/or url missing');
+        if (!title || !content) {
+            throw Error('title and/or url missing');
         }
 
-        if (typeof likes === 'undefined') {
-            likes = 0;
-        }
-
-        const user = await User.findById({ _id: decodedToken.id });
-
-        const blog = new Blog({
+        const newBlog = await Blog.create({
             title,
-            author,
-            url,
-            likes,
-            user: user._id
+            content,
+            UserId: id
         });
 
-        const result = await blog.save();
-
-        user.blogs = user.blogs.concat(result._id);
-        await user.save();
-
-        res.status(201).json(result);
+        res.status(201).json(newBlog);
     } catch (err) {
         next(err);
     }
 });
 
 Router.delete('/blogs/:id', async (req, res, next) => {
-    const token = req.token;
-    const { id } = req.params;
-
     try {
+        const token = req.token;
+        const { id } = req.params;
+
         const decodedToken = jwt.verify(token, SECRET);
 
-        if (!token || !decodedToken.id) {
-            throw new Error('missing id');
+        if (!id) {
+            throw Error('missing id');
         }
 
-        await Blog.findByIdAndDelete({ _id: id });
+        const result = await Blog.destroy({
+            where: { id, UserId: decodedToken.id }
+        });
+
+        if (result === 0) {
+            throw Error('Blog not found');
+        }
 
         res.status(204).end();
     } catch (err) {
@@ -93,21 +78,39 @@ Router.delete('/blogs/:id', async (req, res, next) => {
 });
 
 Router.put('/blogs/:id', async (req, res, next) => {
-    const { id } = req.params;
-    const { title, author, url, likes } = req.body;
-
     try {
-        if (!title || !author || !url || !likes) {
-            throw Error('Request data missing');
+        let { title, content } = req.body;
+
+        const { id } = req.params;
+
+        const token = req.token;
+
+        const decodedToken = jwt.verify(token, SECRET);
+
+        if (!decodedToken.id) {
+            throw Error('missing id');
         }
 
-        const updatedBlog = await Blog.findByIdAndUpdate(
-            id,
-            { title, author, url, likes },
-            { new: true }
-        );
+        if (!title || !content) {
+            throw Error('title and/or url missing');
+        }
 
-        res.json(updatedBlog);
+        // If using postgres, you can just use Blog.update(content, options, returning: true)
+        // That way you remove the props setters below, not needing to call blog.save()
+        const blog = await Blog.findOne({
+            where: { id, userId: decodedToken.id }
+        });
+
+        if (!blog) {
+            throw Error('Blog not found');
+        }
+
+        blog.title = title;
+        blog.content = content;
+
+        await blog.save();
+
+        res.json(blog);
     } catch (err) {
         next(err);
     }
