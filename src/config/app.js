@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { errorHandler, tokenExtractor } = require('./middleware');
@@ -8,6 +9,7 @@ const usersRouter = require('../routes/users');
 const loginRouter = require('../routes/login');
 
 app.use(cors());
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(tokenExtractor);
 
