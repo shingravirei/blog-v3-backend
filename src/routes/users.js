@@ -21,9 +21,7 @@ Router.post('/users', async (req, res, next) => {
         const { username, email, password } = req.body;
 
         if (!username || !email || !password) {
-            throw Error(
-                'Post request must contain name, username and password'
-            );
+            throw Error('Content must contain name, username and password');
         }
 
         if (password.length < 8) {
@@ -45,13 +43,7 @@ Router.post('/users', async (req, res, next) => {
 
 Router.delete('/users/', async (req, res, next) => {
     try {
-        const token = req.token;
-
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         const user = await User.destroy({ where: { id } });
 

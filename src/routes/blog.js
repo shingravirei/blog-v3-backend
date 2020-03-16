@@ -5,13 +5,7 @@ const { SECRET } = require('../config/env-vars');
 
 Router.get('/blogs', async (req, res, next) => {
     try {
-        const token = req.token;
-
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         const blogs = await Blog.findAll({
             where: { UserId: id },
@@ -27,13 +21,8 @@ Router.get('/blogs', async (req, res, next) => {
 Router.get('/blogs/:blogId', async (req, res, next) => {
     try {
         const { blogId } = req.params;
-        const token = req.token;
 
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         const blog = await Blog.findOne({ where: { id: blogId, UserId: id } });
 
@@ -51,13 +40,7 @@ Router.post('/blogs', async (req, res, next) => {
     try {
         let { title, content } = req.body;
 
-        const token = req.token;
-
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         if (!title || !content) {
             throw Error('title and/or url missing');
@@ -77,14 +60,9 @@ Router.post('/blogs', async (req, res, next) => {
 
 Router.delete('/blogs/:blogId', async (req, res, next) => {
     try {
-        const token = req.token;
         const { blogId } = req.params;
 
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         const result = await Blog.destroy({
             where: { id: blogId, UserId: id }
@@ -106,13 +84,7 @@ Router.put('/blogs/:blogId', async (req, res, next) => {
 
         const { blogId } = req.params;
 
-        const token = req.token;
-
-        const { id } = jwt.verify(token, SECRET);
-
-        if (!id) {
-            throw Error('missing id');
-        }
+        const { id } = req.user;
 
         if (!title || !content) {
             throw Error('title and/or content missing');

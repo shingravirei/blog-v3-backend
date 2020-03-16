@@ -1,6 +1,6 @@
 @PORT = 7777
-@TOKEN = bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsImlhdCI6MTU4NDExMDk2NiwiZXhwIjoxNTg0MTk3MzY2fQ.jJmb4DCXljVoWPUM7urB8oA5mJQSjCh0vx8smMHWnFc
-@BLOG_ID = 1
+@TOKEN = bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsImlhdCI6MTU4NDM4MzU3NSwiZXhwIjoxNTg0NDY5OTc1fQ.gPDsx2Rs_qVp8NK8NUz44E4hJswdyHHXKEE5Jb5_yGc
+@BLOG_ID = 3
 
 ###
 
@@ -9,7 +9,7 @@ content-type: application/json
 Authorization: {{TOKEN}}
 
 {
-    "title": "Second Post by Admin",
+    "title": "Test Post of JWT auth",
     "content": "This is the actual post body, Im just without imagination"
 }
 
