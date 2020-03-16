@@ -2,7 +2,8 @@ module.exports = {
     env: {
         commonjs: true,
         es6: true,
-        node: true
+        node: true,
+        jest: true
     },
     extends: ['airbnb-base'],
     globals: {
@@ -20,6 +21,7 @@ module.exports = {
         'linebreak-style': ['off', 'windows'],
         indent: ['error', 4],
         'comma-dangle': 'off',
-        'arrow-parens': 'off'
+        'arrow-parens': 'off',
+        'operator-linebreak': ['off']
     }
 };

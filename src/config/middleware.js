@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
         return res.status(401).send({ error: 'token missing or invalid' });
     }
 
-    res.status(400).send({ error: err.message });
+    return res.status(400).send({ error: err.message });
 };
 
 const tokenExtractor = (req, res, next) => {

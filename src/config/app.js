@@ -1,5 +1,4 @@
 const express = require('express');
-const app = express();
 const helmet = require('helmet');
 const jwt = require('express-jwt');
 const bodyParser = require('body-parser');
@@ -7,6 +6,8 @@ const morgan = require('morgan');
 const compression = require('compression');
 const cors = require('cors');
 const { errorHandler } = require('./middleware');
+
+const app = express();
 
 const blogRouter = require('../routes/blog');
 const usersRouter = require('../routes/users');
