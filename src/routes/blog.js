@@ -1,7 +1,5 @@
 const Router = require('express').Router();
-const jwt = require('jsonwebtoken');
 const { Blog } = require('../models/database-config');
-const { SECRET } = require('../config/env-vars');
 
 Router.get('/blogs', async (req, res, next) => {
     try {
@@ -38,7 +36,7 @@ Router.get('/blogs/:blogId', async (req, res, next) => {
 
 Router.post('/blogs', async (req, res, next) => {
     try {
-        let { title, content } = req.body;
+        const { title, content } = req.body;
 
         const { id } = req.user;
 
