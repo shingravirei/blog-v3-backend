@@ -20,7 +20,9 @@ app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(morgan('tiny'));
-app.use(jwt({ secret: SECRET }).unless({ path: ['/api/login'] }));
+app.use(
+    jwt({ secret: SECRET }).unless({ path: ['/api/login', '/api/blogs/all'] })
+);
 
 app.use('/api', blogRouter);
 app.use('/api', usersRouter);

@@ -1,12 +1,9 @@
 const Router = require('express').Router();
 const { Blog } = require('../models/database-config');
 
-Router.get('/blogs', async (req, res, next) => {
+Router.get('/blogs/all', async (req, res, next) => {
     try {
-        const { id } = req.user;
-
         const blogs = await Blog.findAll({
-            where: { UserId: id },
             attributes: ['id', 'title', 'content', 'updatedAt']
         });
 
